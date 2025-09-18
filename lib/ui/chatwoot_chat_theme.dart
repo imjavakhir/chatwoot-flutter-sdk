@@ -1,13 +1,10 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 
 const CHATWOOT_COLOR_PRIMARY = Color(0xff1f93ff);
 const CHATWOOT_BG_COLOR = Color(0xfff4f6fb);
 const CHATWOOT_AVATAR_COLORS = [CHATWOOT_COLOR_PRIMARY];
-const NEUTRAL_2 = Colors.grey;
-const NEUTRAL_0 = Colors.black26;
-const NEUTRAL_7 = Colors.black;
-const NEUTRAL_7_WITH_OPACITY = Colors.black54;
 const PRIMARY = CHATWOOT_COLOR_PRIMARY;
 
 /// Default chatwoot chat theme which extends [ChatTheme]
@@ -27,7 +24,7 @@ class ChatwootChatTheme extends ChatTheme {
     Widget? deliveredIcon,
     Widget? documentIcon,
     TextStyle emptyChatPlaceholderTextStyle = const TextStyle(
-      color: NEUTRAL_2,
+      color: Colors.black54,
       fontSize: 16,
       fontWeight: FontWeight.w500,
       height: 1.5,
@@ -36,7 +33,7 @@ class ChatwootChatTheme extends ChatTheme {
     Widget? errorIcon,
     Color inputBackgroundColor = Colors.white,
     BorderRadius inputBorderRadius = const BorderRadius.all(
-      Radius.circular(10),
+      Radius.circular(6),
     ),
     Color inputTextColor = Colors.black87,
     TextStyle inputTextStyle = const TextStyle(
@@ -53,20 +50,20 @@ class ChatwootChatTheme extends ChatTheme {
       height: 1.5,
     ),
     TextStyle receivedMessageCaptionTextStyle = const TextStyle(
-      color: NEUTRAL_2,
+      color: Colors.black54,
       fontSize: 12,
       fontWeight: FontWeight.w500,
       height: 1.333,
     ),
     Color receivedMessageDocumentIconColor = PRIMARY,
     TextStyle receivedMessageLinkDescriptionTextStyle = const TextStyle(
-      color: NEUTRAL_0,
+      color: primary,
       fontSize: 14,
       fontWeight: FontWeight.w400,
       height: 1.428,
     ),
     TextStyle receivedMessageLinkTitleTextStyle = const TextStyle(
-      color: NEUTRAL_0,
+      color: primary,
       fontSize: 16,
       fontWeight: FontWeight.w800,
       height: 1.375,
@@ -82,27 +79,27 @@ class ChatwootChatTheme extends ChatTheme {
       height: 1.5,
     ),
     TextStyle sentMessageCaptionTextStyle = const TextStyle(
-      color: NEUTRAL_7_WITH_OPACITY,
+      color: Colors.white,
       fontSize: 12,
       fontWeight: FontWeight.w500,
       height: 1.333,
     ),
-    Color sentMessageDocumentIconColor = NEUTRAL_7,
+    Color sentMessageDocumentIconColor = Colors.white,
     TextStyle sentMessageLinkDescriptionTextStyle = const TextStyle(
-      color: NEUTRAL_7,
+      color: Colors.black54,
       fontSize: 14,
       fontWeight: FontWeight.w400,
       height: 1.428,
     ),
     TextStyle sentMessageLinkTitleTextStyle = const TextStyle(
-      color: NEUTRAL_7,
+      color: Colors.black87,
       fontSize: 16,
       fontWeight: FontWeight.w800,
       height: 1.375,
     ),
     List<Color> userAvatarNameColors = CHATWOOT_AVATAR_COLORS,
     TextStyle userAvatarTextStyle = const TextStyle(
-      color: NEUTRAL_7,
+      color: primary,
       fontSize: 12,
       fontWeight: FontWeight.w800,
       height: 1.333,
@@ -119,7 +116,6 @@ class ChatwootChatTheme extends ChatTheme {
     double inputElevation= 0,
     EdgeInsets inputMargin = const EdgeInsets.all(8),
     EdgeInsets inputPadding= const EdgeInsets.all(8),
-    InputDecoration inputTextDecoration= const InputDecoration(),
     double messageInsetsHorizontal= 8,
     double messageInsetsVertical= 8,
     double messageMaxWidth= 500,
@@ -132,19 +128,19 @@ class ChatwootChatTheme extends ChatTheme {
         textStyle: const TextStyle()
     ),
     TypingIndicatorTheme typingIndicatorTheme= const TypingIndicatorTheme(
-        animatedCirclesColor: CHATWOOT_COLOR_PRIMARY,
+        animatedCirclesColor: primary,
         animatedCircleSize: 8,
         bubbleBorder: const BorderRadius.all(const Radius.circular(8)),
-        bubbleColor: CHATWOOT_COLOR_PRIMARY,
-        countAvatarColor: CHATWOOT_COLOR_PRIMARY,
-        countTextColor: NEUTRAL_7,
+        bubbleColor: Colors.white,
+        countAvatarColor: primary,
+        countTextColor: Colors.black87,
         multipleUserTextStyle: const TextStyle()
     ),
     UnreadHeaderTheme unreadHeaderTheme= const UnreadHeaderTheme(
         color: CHATWOOT_COLOR_PRIMARY,
         textStyle: const TextStyle()
     ),
-    Color userAvatarImageBackgroundColor= Colors.grey,
+    Color userAvatarImageBackgroundColor= Colors.white,
   }) : super(
           attachmentButtonIcon: attachmentButtonIcon,
           backgroundColor: backgroundColor,
@@ -185,7 +181,7 @@ class ChatwootChatTheme extends ChatTheme {
           inputElevation: inputElevation,
           inputMargin: inputMargin,
           inputPadding: inputPadding,
-          inputTextDecoration: inputTextDecoration,
+          inputTextDecoration: const InputDecoration(),
           messageInsetsHorizontal: messageInsetsHorizontal,
           messageInsetsVertical: messageInsetsVertical,
           messageMaxWidth: messageMaxWidth,
