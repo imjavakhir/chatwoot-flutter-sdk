@@ -19,22 +19,15 @@ class ChatwootEvent {
 
   ChatwootEvent({this.type, this.message, this.identifier});
 
-  factory ChatwootEvent.fromJson(Map<String, dynamic> json) =>
-      _$ChatwootEventFromJson(json);
+  factory ChatwootEvent.fromJson(Map<String, dynamic> json) => _$ChatwootEventFromJson(json);
 
   Map<String, dynamic> toJson() => _$ChatwootEventToJson(this);
 }
 
 ChatwootEventMessage? eventMessageFromJson(value) {
-  if (value == null) {
-    return null;
-  } else if (value is num) {
-    return ChatwootEventMessage();
-  } else if (value is String) {
-    return ChatwootEventMessage();
-  } else {
-    return ChatwootEventMessage.fromJson(value as Map<String, dynamic>);
-  }
+  if (value == null) return null;
+  if (value is num || value is String) return ChatwootEventMessage();
+  return ChatwootEventMessage.fromJson(value as Map<String, dynamic>);
 }
 
 @JsonSerializable(explicitToJson: true)
@@ -47,14 +40,14 @@ class ChatwootEventMessage {
 
   ChatwootEventMessage({this.data, this.event});
 
-  factory ChatwootEventMessage.fromJson(Map<String, dynamic> json) =>
-      _$ChatwootEventMessageFromJson(json);
+  factory ChatwootEventMessage.fromJson(Map<String, dynamic> json) => _$ChatwootEventMessageFromJson(json);
 
   Map<String, dynamic> toJson() => _$ChatwootEventMessageToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
 class ChatwootEventMessageData {
+  // ---------- Known typed fields (keep as-is) ----------
   @JsonKey(name: "account_id")
   final int? accountId;
 
@@ -115,35 +108,67 @@ class ChatwootEventMessageData {
   @JsonKey()
   final dynamic users;
 
-  ChatwootEventMessageData(
-      {this.id,
-      this.user,
-      this.conversation,
-      this.echoId,
-      this.sender,
-      this.conversationId,
-      this.createdAt,
-      this.contentAttributes,
-      this.contentType,
-      this.messageType,
-      this.content,
-      this.inboxId,
-      this.sourceId,
-      this.updatedAt,
-      this.status,
-      this.accountId,
-      this.externalSourceIds,
-      this.private,
-      this.senderId,
-      this.users});
+  // ---------- NEW: preserve the entire raw socket map ----------
+  @JsonKey(ignore: true)
+  final Map<String, dynamic> raw;
 
-  factory ChatwootEventMessageData.fromJson(Map<String, dynamic> json) =>
-      _$ChatwootEventMessageDataFromJson(json);
+  ChatwootEventMessageData({
+    this.id,
+    this.user,
+    this.conversation,
+    this.echoId,
+    this.sender,
+    this.conversationId,
+    this.createdAt,
+    this.contentAttributes,
+    this.contentType,
+    this.messageType,
+    this.content,
+    this.inboxId,
+    this.sourceId,
+    this.updatedAt,
+    this.status,
+    this.accountId,
+    this.externalSourceIds,
+    this.private,
+    this.senderId,
+    this.users,
+    Map<String, dynamic>? raw,
+  }) : raw = raw ?? const {};
+
+  factory ChatwootEventMessageData.fromJson(Map<String, dynamic> json) {
+    final typed = _$ChatwootEventMessageDataFromJson(json);
+    // Rebuild with the raw payload preserved
+    return ChatwootEventMessageData(
+      id: typed.id,
+      user: typed.user,
+      conversation: typed.conversation,
+      echoId: typed.echoId,
+      sender: typed.sender,
+      conversationId: typed.conversationId,
+      createdAt: typed.createdAt,
+      contentAttributes: typed.contentAttributes,
+      contentType: typed.contentType,
+      messageType: typed.messageType,
+      content: typed.content,
+      inboxId: typed.inboxId,
+      sourceId: typed.sourceId,
+      updatedAt: typed.updatedAt,
+      status: typed.status,
+      accountId: typed.accountId,
+      externalSourceIds: typed.externalSourceIds,
+      private: typed.private,
+      senderId: typed.senderId,
+      users: typed.users,
+      raw: Map<String, dynamic>.from(json), // <- keeps "attachments" and any future fields
+    );
+  }
 
   Map<String, dynamic> toJson() => _$ChatwootEventMessageDataToJson(this);
 
-  getMessage() {
-    return ChatwootMessage.fromJson(toJson());
+  ChatwootMessage getMessage() {
+    // Use the original raw map so nothing is lost (attachments, future fields, etc.)
+    return ChatwootMessage.fromJson(raw);
   }
 }
 
@@ -167,11 +192,9 @@ class ChatwootEventMessageUser extends Equatable {
   @HiveField(3)
   final String? thumbnail;
 
-  ChatwootEventMessageUser(
-      {this.id, this.avatarUrl, this.name, this.thumbnail});
+  ChatwootEventMessageUser({this.id, this.avatarUrl, this.name, this.thumbnail});
 
-  factory ChatwootEventMessageUser.fromJson(Map<String, dynamic> json) =>
-      _$ChatwootEventMessageUserFromJson(json);
+  factory ChatwootEventMessageUser.fromJson(Map<String, dynamic> json) => _$ChatwootEventMessageUserFromJson(json);
 
   Map<String, dynamic> toJson() => _$ChatwootEventMessageUserToJson(this);
 
@@ -181,9 +204,7 @@ class ChatwootEventMessageUser extends Equatable {
 
 enum ChatwootEventType { welcome, ping, confirm_subscription }
 
-String? eventTypeToJson(ChatwootEventType? actionType) {
-  return actionType.toString();
-}
+String? eventTypeToJson(ChatwootEventType? actionType) => actionType.toString();
 
 ChatwootEventType? eventTypeFromJson(String? value) {
   switch (value) {
@@ -223,8 +244,6 @@ String? eventMessageTypeToJson(ChatwootEventMessageType? actionType) {
       return "message.updated";
     case ChatwootEventMessageType.conversation_status_changed:
       return "conversation.status_changed";
-    default:
-      return actionType.toString();
   }
 }
 
