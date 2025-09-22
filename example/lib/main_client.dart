@@ -4,8 +4,8 @@ import 'dart:typed_data';
 
 import 'package:chatwoot_sdk/chatwoot_sdk.dart';
 import 'package:chatwoot_sdk/ui/chatwoot_chat_theme.dart';
-import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
 import 'package:open_filex/open_filex.dart';
 
 void main() {
